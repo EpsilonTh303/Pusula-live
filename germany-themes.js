@@ -111,8 +111,8 @@ const THEMES = {
     },
     "lexicon": {
       "title": {
-        "tr": "Yeni hayatının\nbir sonraki yörüngesi.",
-        "en": "Your next chapter.\nA clearer trajectory."
+        "tr": "Almanya’da eğitim ve yaşam planı",
+        "en": "Study and life plan for Germany"
       },
       "balance": {
         "tr": "Bütçe Dengesi · likit",
@@ -141,6 +141,38 @@ const THEMES = {
       "timeline": {
         "tr": "Yaşam ve nakit zaman çizelgesi",
         "en": "Life and cash timeline"
+      },
+      "status": {
+        "tr": "HORIZON / SENARYO DURUMU",
+        "en": "HORIZON / SCENARIO STATUS"
+      },
+      "heroEyebrow": {
+        "tr": "ALMANYA · EĞİTİM VE YAŞAM SENARYOSU",
+        "en": "GERMANY · STUDY AND LIFE SCENARIO"
+      },
+      "heroDescription": {
+        "tr": "Eğitim, iş, yaşam giderleri ve nakit ihtiyacını birlikte incele. Varsayımları değiştir; sonuçları ve açık koşulları karşılaştır.",
+        "en": "Review education, work, living costs, and cash needs together. Change assumptions to compare outcomes and outstanding conditions."
+      },
+      "resultsEyebrow": {
+        "tr": "01 / SENARYO SONUÇLARI",
+        "en": "01 / SCENARIO RESULTS"
+      },
+      "telemetry": {
+        "tr": "02 / NAKİT AKIŞI",
+        "en": "02 / CASH FLOW"
+      },
+      "scenarioEyebrow": {
+        "tr": "SENARYO / ALMANYA",
+        "en": "SCENARIO / GERMANY"
+      },
+      "chartTitle": {
+        "tr": "60 aylık nakit akışı",
+        "en": "60-month cash flow"
+      },
+      "footerNote": {
+        "tr": "Horizon · Varsayımları incele, gerçek kanıtlarla karar ver.",
+        "en": "Horizon · Review assumptions and decide with real evidence."
       }
     },
     "decor": "none",

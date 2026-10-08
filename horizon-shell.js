@@ -10,7 +10,12 @@
  const theme=control('Tema','theme',oldTheme),language=control('Dil','language',oldLanguage);
  if(!oldTheme)for(const item of Object.values(THEMES)){const option=document.createElement('option');option.value=item.id;option.textContent=item.label.tr;theme.append(option);}
  if(!oldLanguage)for(const[value,text]of [['tr','Türkçe'],['en','English']]){const option=document.createElement('option');option.value=value;option.textContent=text;language.append(option);}
- row.append(brand,controls);header.append(row);
+ const settings=document.createElement('dialog');settings.id='horizon-settings';settings.className='horizon-settings';settings.setAttribute('aria-labelledby','settings-title');
+ const settingsHeading=document.createElement('header'),settingsTitle=document.createElement('h2');settingsTitle.id='settings-title';
+ const close=document.createElement('button');close.id='settings-close';close.type='button';close.textContent='×';close.addEventListener('click',()=>settings.close());settingsHeading.append(settingsTitle,close);settings.append(settingsHeading,controls);document.body.append(settings);
+ const settingsToggle=document.createElement('button');settingsToggle.id='settings-toggle';settingsToggle.className='settings-toggle';settingsToggle.type='button';settingsToggle.setAttribute('aria-haspopup','dialog');settingsToggle.setAttribute('aria-controls',settings.id);settingsToggle.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 3h6l1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1Z"/><circle cx="12" cy="12" r="3.5"/></svg>';
+ settingsToggle.addEventListener('click',()=>{settings.showModal();theme.focus();});settings.addEventListener('close',()=>settingsToggle.focus());
+ row.append(brand,settingsToggle);header.append(row);
  const nav=document.createElement('nav');nav.className='horizon-nav';nav.setAttribute('aria-label','Ana gezinme');
  const route=new URL(location.href).pathname.split('/').pop()||'index.html';
  const mission=germany?'germany.html':route;
@@ -25,6 +30,8 @@
  function links(){for(const a of document.querySelectorAll('a[href]')){const raw=a.getAttribute('href');if(raw.startsWith('#'))continue;const url=new URL(raw,location.href);if(url.origin===location.origin&&url.pathname.endsWith('.html')){url.searchParams.set('theme',theme.value);url.searchParams.set('lang',language.value);a.href=url.href;}}}
  function preferences(){
   const selected=THEMES[theme.value]||THEMES.mission;theme.value=selected.id;document.documentElement.dataset.horizonTheme=selected.id;
+  const english=language.value==='en';settingsTitle.textContent=english?'Settings':'Ayarlar';settingsToggle.setAttribute('aria-label',english?'Settings':'Ayarlar');settingsToggle.title=english?'Theme and language settings':'Tema ve dil ayarları';close.setAttribute('aria-label',english?'Close settings':'Ayarları kapat');
+  brand.querySelector('small').textContent=selected.id==='mission'?'FLIGHT DECK · 01':(english?'SCENARIO PLANNER':'SENARYO PLANLAYICI');
   document.documentElement.style.colorScheme=selected.id==='horizon'?'light':'dark';
   if(!oldTheme){for(const[key,value]of Object.entries(selected.tokens))document.documentElement.style.setProperty(key,value);for(const[key,value]of Object.entries(selected.fonts))document.documentElement.style.setProperty('--font-'+key,value);for(const[key,value]of Object.entries(selected.chart))document.documentElement.style.setProperty('--chart-'+key,value);}
   for(const[key,value]of [['--card',selected.tokens['--panel']],['--fg',selected.tokens['--text']],['--line',selected.tokens['--grid']]])document.documentElement.style.setProperty(key,value);
