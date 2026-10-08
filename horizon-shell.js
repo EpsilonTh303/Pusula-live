@@ -26,7 +26,7 @@
  if(alerts)nav.append(alerts);header.append(nav);document.body.prepend(header);
  oldNav?.remove();document.querySelector('.masthead')?.remove();
  const docsHeader=document.querySelector('main>header');if(route==='docs.html')docsHeader?.remove();else docsHeader?.classList.add('page-intro');
- document.documentElement.dataset.horizonPage=germany?'germany':route.replace('.html','');
+ document.documentElement.dataset.horizonPage=germany?'germany':route==='routes.html'?'index':route.replace('.html','');
  function links(){for(const a of document.querySelectorAll('a[href]')){const raw=a.getAttribute('href');if(raw.startsWith('#'))continue;const url=new URL(raw,location.href);if(url.origin===location.origin&&url.pathname.endsWith('.html')){url.searchParams.set('theme',theme.value);url.searchParams.set('lang',language.value);a.href=url.href;}}}
  function preferences(){
   const selected=THEMES[theme.value]||THEMES.mission;theme.value=selected.id;document.documentElement.dataset.horizonTheme=selected.id;
@@ -41,5 +41,5 @@
  }
  window.HorizonShell={refreshLinks:links};theme.value=THEMES[params.get('theme')]?params.get('theme'):'mission';language.value=params.get('lang')==='en'?'en':'tr';
  theme.addEventListener('change',preferences);language.addEventListener('change',preferences);preferences();
- document.documentElement.classList.remove('horizon-initializing');
+
 })();

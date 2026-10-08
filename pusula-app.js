@@ -66,3 +66,5 @@ function calculate(){
 $('funding').onclick=()=>{conditional=d.funding_scenarios.find(f=>f.id===$('funding-case').value);$('award').value=conditional.annual_award_local;$('funding-note').textContent=conditional.label;calculate();};
 $('award').addEventListener('input',()=>{if(conditional){conditional=null;$('funding-note').textContent='Manuel fon varsayımı; koşullu ücret muafiyetleri kaldırıldı.';calculate();}});
 $('country').onchange=populate;$('program').onchange=selectProgram;for(const id of ['budget','living','multiplier','award','repay','repay-months'])$(id).addEventListener('input',calculate);populate();
+
+window.HorizonView={captureExtra(){return {fundingApplied:conditional?.id||null};},restore(fields,extra){$('country').value=fields.country;populate();$('program').value=fields.program;selectProgram();for(const[id,value]of Object.entries(fields))$(id).value=value===null?'':String(value);if(extra.fundingApplied){$('funding-case').value=extra.fundingApplied;$('funding').click();$('funding-case').value=fields['funding-case'];}calculate();}};

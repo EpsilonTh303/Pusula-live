@@ -134,3 +134,5 @@ el('theme').addEventListener('change',()=>applyTheme(el('theme').value));
 el('language').addEventListener('change',()=>{language=el('language').value;applyTheme(activeTheme);});
 new ResizeObserver(()=>{if(chartState)draw(chartState.r,chartState.reserve);}).observe(el('chart'));
 renderProgram(true);applyTheme(params.get('theme'));setupBudget();
+
+window.HorizonView={restore(fields){el('program').value=fields.program;renderProgram(true);for(const[id,value]of Object.entries(fields)){const node=el(id);if(node)node.value=value===null?'':String(value);}budgetMode(fields['budget-mode']);if(fields['budget-mode']==='sources')applySources();else allocationChanged();}};

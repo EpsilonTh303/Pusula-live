@@ -58,3 +58,14 @@ main .controls>label{justify-content:flex-end}
  .budget-panel{padding:12px}.budget-panel fieldset{width:100%}
  .horizon-masthead{flex-wrap:nowrap}
 }
+
+.scenario-settings{margin-top:24px;border-top:1px solid var(--grid);padding-top:18px;font:14px/1.5 var(--font-body,system-ui)}
+.scenario-settings summary{cursor:pointer;font-weight:600;padding:8px 0}
+.scenario-settings p{overflow-wrap:anywhere;color:var(--muted)}
+.scenario-common-fields{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.scenario-common-fields label{display:flex;flex-direction:column;gap:8px;min-width:0}
+.scenario-common-fields input{width:100%;min-width:0;max-width:100%;box-sizing:border-box;min-height:48px;font:16px/1.4 var(--font-body,system-ui)}
+.scenario-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.scenario-actions button{flex:1 1 140px;min-height:44px;font:14px/1.4 var(--font-body,system-ui);white-space:normal}
+#scenario-file[hidden]{display:none!important}
+#scenario-status.error{color:var(--danger)}

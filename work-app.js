@@ -39,3 +39,5 @@ function calculate(){
  }catch(e){$('error').textContent=e.message;HorizonAlerts.update({kind:'work',title:selected()?.name_tr||'İş yolu',items:[{id:'invalid',status:'fail',title:'Geçersiz veya boş girdi',detail:e.message,action:'Hatalı alanı düzelt; eski hesap sonucu geçerli sayılmadı.',target:'start_date'}]});}
 }
 $('country').onchange=populate;$('route').onchange=changeRoute;$('bridge').onclick=()=>{$('experience_months').value=12;$('bridge_months').value=12;calculate();};populate();
+
+window.HorizonView={restore(fields){$('country').value=fields.country;populate();$('route').value=fields.route;changeRoute();for(const[id,value]of Object.entries(fields))$(id).value=value===null?'':String(value);calculate();}};

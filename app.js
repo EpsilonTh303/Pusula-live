@@ -43,3 +43,5 @@ function render(){
 function loadRoute(){const r=IMMIGRATION_DATA.routes.find(r=>r.id===routeSelect.value),p=IMMIGRATION_DATA.assumptions.routes[r.id];for(const k of inputs)document.getElementById(k).value=p[k];document.getElementById('months').value=r.duration_months;document.getElementById('unit').textContent=`Tutarlar: ${r.currency} · örnek varsayımlar`;render();}
 routeSelect.addEventListener('change',loadRoute);document.getElementById('case').addEventListener('change',render);for(const k of [...inputs,'months'])document.getElementById(k).addEventListener('input',render);
 new ResizeObserver(()=>{if(last)draw(last.result,last.reserve,last.unit);}).observe(document.getElementById('chart'));loadRoute();
+
+window.HorizonView={restore(fields){routeSelect.value=fields.route;loadRoute();for(const[id,value]of Object.entries(fields))document.getElementById(id).value=value===null?'':String(value);render();}};
