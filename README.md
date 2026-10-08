@@ -1,4 +1,4 @@
-# Pusula live
+# Horizon live
 
 Anonymized static interface. No personal profile, repository history, CLI, logs or second-brain files.
 

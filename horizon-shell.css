@@ -1,0 +1,18 @@
+/* Shared accessibility and the light skin for legacy screens. */
+.horizon-theme-picker{display:flex;align-items:center;gap:12px;max-width:340px;font-size:14px;margin:0 0 18px}
+.horizon-theme-picker select{width:auto;flex:1}
+nav a{min-height:40px;display:inline-flex;align-items:center}
+.docs-layout nav a{display:block}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+html[data-horizon-theme="horizon"]{color-scheme:light}
+html[data-horizon-theme="horizon"] body{background:var(--bg);color:var(--text)}
+html[data-horizon-theme="horizon"] .card,html[data-horizon-theme="horizon"] .panel,html[data-horizon-theme="horizon"] section.panel{background:var(--panel);border-color:var(--grid)}
+html[data-horizon-theme="horizon"] :is(input,select,button){background:var(--panel);color:var(--text);border-color:var(--grid)}
+html[data-horizon-theme="horizon"] button{background:var(--accent);color:var(--bg)}
+html[data-horizon-theme="horizon"] button:hover{filter:brightness(.9)}
+html[data-horizon-theme="horizon"] :is(.warn,.tags){color:var(--warn)}
+html[data-horizon-theme="horizon"] :is(#error,.bad){color:var(--danger)}
+html[data-horizon-theme="horizon"] .error{color:var(--danger)}
+html[data-horizon-theme="horizon"] .bar{background:var(--grid)}
+html[data-horizon-theme="horizon"] :is(.route-nav a,.topbar label){font-size:13px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
