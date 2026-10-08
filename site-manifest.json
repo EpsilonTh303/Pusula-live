@@ -1,0 +1,29 @@
+{
+  "kind": "anonymized_public_static_ui",
+  "files": [
+    "app.js",
+    "cash.js",
+    "data.js",
+    "germany-app.js",
+    "germany-cash.js",
+    "germany-data.js",
+    "germany-themes.js",
+    "germany.css",
+    "germany.html",
+    "index.html",
+    "lab.html",
+    "lab.js",
+    "pusula-app.js",
+    "pusula-cash.js",
+    "pusula-data.js",
+    "pusula.html",
+    "routes.html",
+    "work-app.js",
+    "work-data.js",
+    "work-model.js",
+    "work.html"
+  ],
+  "personal_profile_included": false,
+  "example_birth_date": "2004-01-01",
+  "example_budget_azn": 30000
+}

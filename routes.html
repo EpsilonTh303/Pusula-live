@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Göç yolları — koşullu nakit simülasyonu</title>
+<style>
+:root{color-scheme:light dark;--bg:light-dark(#faf9f6,#171b20);--fg:light-dark(#18232b,#e5e9ed);--muted:light-dark(#54616d,#bac4cc);--line:light-dark(#c8d2d9,#45515b);--accent:light-dark(#176c80,#72d6db)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,sans-serif}main{max-width:1000px;margin:auto;padding:24px}h1{font-size:28px;margin:0 0 12px}h2{font-size:20px}a{color:var(--accent)}p{max-width:80ch}fieldset{border:0;padding:0;margin:20px 0}.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}label{display:flex;flex-direction:column;gap:5px}input,select,button{font:inherit;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px;width:100%;min-width:0}button{width:auto}.numbers{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;border-block:1px solid var(--line);padding:16px 0}.value{display:block;font-size:23px}.muted{color:var(--muted)}#error{color:light-dark(#a12626,#ffb4b4)}svg{display:block;width:100%;height:280px}svg text{fill:var(--fg);font-size:12px}svg line{stroke:var(--line)}.trace{fill:none;stroke:var(--accent);stroke-width:2}.reserve{stroke:var(--muted);stroke-dasharray:5 4}.zero{stroke:var(--fg)}.timeline{padding-left:24px}li{margin:8px 0}nav{display:flex;flex-wrap:wrap;gap:16px}@media(max-width:420px){main{padding:16px}h1{font-size:24px}.controls{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Hangi yol, hangi nakit dayanıklılığı?</h1>
+<p><a href="germany.html"><strong>Almanya master: program, yaş, bloke hesap, öğrenci işi ve yerel sosyal hayat →</strong></a></p>
+<p>Kalıcı taşınma ve nitelikli iş hedefi · 2029 başlangıç senaryosu · mevcut rota kararı korunuyor.</p>
+<p class="muted"><strong>İlk açılıştaki tutarlar varsayımsal test girdileridir.</strong> Kişisel kabul/iş/oturum şansı bilinmiyor. Bu araç nakit akışını gösterir; teklif ve vize uygunluğunu ayrıca kontrol et. Girdi değişiklikleri kaydedilmez ve dışarı gönderilmez.</p>
+<nav><a href="../reports/Decision.md">Rota değerlendirmesi</a><a href="../reports/Life.md">Kariyer, ilişki ve aile</a><a href="../reports/Simulation.md">Bütün stres testleri</a></nav>
+<fieldset class="controls"><legend>Yol ve stres koşulu</legend>
+<label>Rota<select id="route"></select></label>
+<label>Koşul<select id="case"><option value="base">Olağan test</option><option value="adverse">Olumsuz test</option><option value="strong">Güçlü test</option></select></label>
+</fieldset>
+<fieldset class="controls"><legend id="unit">Tutarlar</legend>
+<label>Başlangıç likit nakit<input id="initial_cash" type="number" min="0" step="0.01" required></label>
+<label>Varış / depozito / tek seferlik<input id="initial_cost" type="number" min="0" step="0.01" required></label>
+<label>Aylık net kullanılabilir gelir<input id="income_monthly" type="number" min="0" step="0.01" required></label>
+<label>Aylık toplam gider<input id="expense_monthly" type="number" min="0" step="0.01" required></label>
+<label>Korunacak acil rezerv<input id="reserve" type="number" min="0" step="0.01" required></label>
+<label>Simülasyon süresi (ay)<input id="months" type="number" min="1" max="600" step="1" required></label>
+</fieldset>
+<p id="case-detail" class="muted"></p><p id="error" role="alert"></p>
+<div class="numbers" aria-live="polite"><div>Rezervli minimum başlangıç<strong class="value" id="required"></strong></div><div>Son bakiye<strong class="value" id="ending"></strong></div><div>İlk negatif ay<strong class="value" id="negative"></strong></div></div>
+<svg id="chart" role="img" aria-label="Ay bazında likit bakiye, sıfır ve rezerv çizgisi"></svg>
+<p class="muted">Çizgi: likit bakiye · kesikli: rezerv · düz: sıfır. Ay 0 varış masrafını içerir. Bloke hesap anaparasını gider olarak ikinci kez ekleme; serbest bırakılan aylık tutarı gelir takviminde ele al. Bu basit form eşit aylık geliri varsayar; gerçek dönemlik harç ve ödeme takvimi için engine/cash.py aylık çizelgesini kullan.</p>
+<h2>Bu yol bizi nereye götürebilir?</h2><ol class="timeline" id="timeline"></ol><p id="gates"></p>
+<p>Olumsuz dal: kapı kapanırsa borçla zorlamayı durdur, yasal süre ve fonu kontrol et, alternatif teklif veya ilgili iş/RA köprüsünü değerlendir. Yeni ülkeye geçiş yeni başvuru ve yeni maliyettir. İlişki veya evlilik sonucu simüle edilmiş bir yüzde değildir.</p>
+<p class="muted">2026 tarihli kurallar 2029 için garanti değil. Süre ve paralar eğitim, iş ve oturum kapılarından ayrı okunur. Hazırlığın ortak riski: notlar, diploma/alan eşdeğerliği, dil, gerçek teknik çıktı ve çıkış uygunluğu.</p>
+</main><script src="data.js"></script><script src="cash.js"></script><script src="app.js"></script></body></html>
