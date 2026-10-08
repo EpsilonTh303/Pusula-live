@@ -4,7 +4,7 @@
  const oldTheme=document.querySelector('#theme'),oldLanguage=document.querySelector('#language'),oldNav=document.querySelector('nav'),alerts=document.querySelector('#alerts-tab');
  const header=document.createElement('header');header.id='horizon-header';header.className='horizon-header';
  const row=document.createElement('div');row.className='horizon-masthead';
- const brand=document.createElement('a');brand.className='horizon-brand brand';brand.href='germany.html';brand.innerHTML='<svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14"/><ellipse cx="20" cy="20" rx="18" ry="7" transform="rotate(-35 20 20)"/><circle class="brand-node" cx="30" cy="10" r="3"/></svg><span>HORIZON</span>';
+ const brand=document.createElement('a');brand.className='horizon-brand brand';brand.href='germany.html';brand.innerHTML='<svg class="brand-icon" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14"/><ellipse cx="20" cy="20" rx="18" ry="7" transform="rotate(-35 20 20)"/><circle class="brand-node" cx="30" cy="10" r="3"/></svg><span class="brand-stack"><span>HORIZON</span><small aria-hidden="true">FLIGHT DECK · 01</small></span>';
  const controls=document.createElement('div');controls.className='horizon-preferences';
  function control(text,id,existing){const label=document.createElement('label'),caption=document.createElement('span');caption.textContent=text;const select=existing||document.createElement('select');select.id=id;label.append(caption,select);controls.append(label);return select;}
  const theme=control('Tema','theme',oldTheme),language=control('Dil','language',oldLanguage);
@@ -16,7 +16,7 @@
  const mission=germany?'germany.html':route;
  const otherRoutes=document.documentElement.dataset.publicSite==='true'?'routes.html':'index.html';
  for(const[href,text]of [['germany.html','Almanya · Master'],['work.html','Doğrudan iş / göç'],['pusula.html','Altı ülke'],['lab.html','Kariyer deneyleri'],['docs.html','Belgeler'],[otherRoutes,'Diğer yollar']]){
-  const a=document.createElement('a');a.href=href;a.textContent=text;if(href===mission){a.setAttribute('aria-current','page');a.className='active';}nav.append(a);
+  const a=document.createElement('a');a.dataset.channel=String(nav.children.length+1).padStart(2,'0');a.href=href;a.textContent=text;const channel=document.createElement('span');channel.className='nav-channel';channel.setAttribute('aria-hidden','true');channel.textContent=a.dataset.channel;a.prepend(channel);if(href===mission){a.setAttribute('aria-current','page');a.className='active';}nav.append(a);
  }
  if(alerts)nav.append(alerts);header.append(nav);document.body.prepend(header);
  oldNav?.remove();document.querySelector('.masthead')?.remove();
@@ -34,5 +34,5 @@
  }
  window.HorizonShell={refreshLinks:links};theme.value=THEMES[params.get('theme')]?params.get('theme'):'mission';language.value=params.get('lang')==='en'?'en':'tr';
  theme.addEventListener('change',preferences);language.addEventListener('change',preferences);preferences();
- new ResizeObserver(()=>document.documentElement.style.setProperty('--header-height',header.offsetHeight+'px')).observe(header);
+ document.documentElement.classList.remove('horizon-initializing');
 })();

@@ -1,17 +1,21 @@
 /* Shared Horizon chrome and token-based components. */
-html{scroll-padding-top:calc(var(--header-height,150px) + 20px)}
+html{scroll-padding-top:20px}
 html body{margin:0;background:var(--bg);color:var(--text);font:15px/1.7 var(--font-body,system-ui)}
 body>main,body>#decor+main{max-width:1320px;margin:auto;padding:24px 18px}
 a{color:var(--accent);text-underline-offset:4px}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-.horizon-header{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--grid);padding:0 max(18px,calc((100% - 1284px)/2));box-shadow:0 4px 20px var(--glow)}
+.horizon-header{position:relative;z-index:1;max-width:1284px;margin:18px auto 0;padding:0 20px;border:1px solid var(--grid);border-top:2px solid var(--accent);border-radius:16px;background:linear-gradient(120deg,var(--panel),var(--bg));box-shadow:0 8px 32px var(--glow);isolation:isolate}
+.horizon-header:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px;opacity:.15}
+.brand-stack{display:flex;flex-direction:column;gap:4px}.horizon-brand .brand-stack small{font:10px/1.4 var(--font-mono,monospace);letter-spacing:.16em;color:var(--muted)}
+.horizon-nav .nav-channel{font:10px/1 var(--font-mono,monospace);color:var(--muted);margin-right:8px;opacity:.7}
+.horizon-nav a.active .nav-channel{color:var(--accent);opacity:1}
 .horizon-masthead{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 0}
 .horizon-header .horizon-brand{display:flex;align-items:center;gap:9px;color:var(--text);font:700 16px/1.4 var(--font-display,system-ui);letter-spacing:.13em;text-decoration:none}
 .horizon-brand .brand-icon{width:32px;height:32px;fill:none;stroke:var(--accent);stroke-width:1.3;flex-shrink:0}.horizon-brand .brand-node{fill:var(--accent);stroke:var(--bg)}
 .horizon-preferences{display:flex;gap:12px}.horizon-preferences label{display:flex;flex-direction:column;gap:3px;margin:0;color:var(--muted);font:12px/1.4 var(--font-body,system-ui)}
 .horizon-preferences select{font:13px/1.5 var(--font-body,system-ui);padding:7px 9px;min-height:36px;width:135px;color:var(--text);background:var(--panel);border:1px solid var(--grid);border-radius:8px}
-.horizon-header .horizon-nav{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding:0 0 12px;margin:0;scrollbar-width:thin}
-.horizon-nav a,.horizon-header .alerts-tab{display:inline-flex;align-items:center;flex-shrink:0;min-height:40px;white-space:nowrap;padding:7px 12px;font:500 13px/1.5 var(--font-body,system-ui);text-decoration:none;color:var(--muted);border:1px solid transparent;border-radius:8px}
+.horizon-header .horizon-nav{border-top:1px solid var(--grid);padding-top:12px;display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding:12px 0;margin:0;scrollbar-width:thin}
+.horizon-nav a,.horizon-header .alerts-tab{display:inline-flex;align-items:center;flex-shrink:0;min-height:40px;white-space:nowrap;padding:7px 12px;font:500 13px/1.5 var(--font-body,system-ui);text-decoration:none;color:var(--muted);border:1px solid transparent;border-radius:6px}
 .horizon-nav a.active,.horizon-nav a:hover{color:var(--accent);border-color:var(--grid);background:var(--accent-soft,var(--panel))}
 .page-intro{margin:6px 0 26px;padding:16px 0;border:0}.page-intro>p{max-width:76ch}.page-intro h1{line-height:1.2;letter-spacing:-.025em;font-size:clamp(28px,4vw,44px)}
 html :is(input,select,textarea,button){font:inherit;color:var(--text);background:var(--panel-soft,var(--panel));border:1px solid var(--grid);border-radius:8px;min-height:42px}
@@ -25,9 +29,10 @@ html[data-horizon-page]:not([data-horizon-page="germany"]) .metric{color:var(--a
 html[data-horizon-page]:not([data-horizon-page="germany"]) label{font-size:14px;color:var(--muted)}
 html[data-horizon-page]:not([data-horizon-page="germany"]) svg text{fill:var(--muted)!important}
 svg path[stroke="#81ded0"]{stroke:var(--accent)}svg path[stroke="#edb979"]{stroke:var(--warn)}
-.docs-layout nav a{display:block}.docs-layout>aside{top:calc(var(--header-height,150px) + 16px);max-height:calc(100vh - var(--header-height,150px) - 32px)}
+.docs-layout nav a{display:block}.docs-layout>aside{top:16px;max-height:calc(100vh - 32px)}
 .source-language-note{font-size:12px;color:var(--muted);border-left:2px solid var(--grid);padding-left:10px}
 .budget-panel{border:1px solid var(--grid);border-radius:10px;background:var(--panel-soft,var(--panel));padding:14px;margin:18px 0}
 .budget-panel fieldset{margin:12px 0}.budget-panel legend{padding-bottom:8px}.budget-panel [disabled]{opacity:.6}.budget-panel #profile-budget{margin:14px 0 0;font-size:12px;overflow-wrap:anywhere}
-@media(max-width:600px){.horizon-header{padding:0 12px}.horizon-masthead{gap:10px;flex-wrap:wrap;padding:12px 0}.horizon-preferences{gap:8px}.horizon-preferences select{width:110px;font-size:12px}.horizon-brand .brand-icon{width:26px}.horizon-header .horizon-brand{font-size:14px}.horizon-nav a{font-size:12px;padding:6px 10px}.horizon-header .alerts-tab{font-size:12px!important}body>main{padding:18px 12px}html[data-horizon-page]:not([data-horizon-page="germany"]) .panel{padding:16px}}
+@media(max-width:1320px){.horizon-header{margin:14px 18px 0}}
+@media(max-width:600px){.horizon-header{padding:0 12px;margin:10px 10px 0;border-radius:12px}.horizon-masthead{gap:10px;flex-wrap:wrap;padding:12px 0}.horizon-preferences{gap:8px}.horizon-preferences select{width:110px;font-size:12px}.horizon-brand .brand-icon{width:26px}.horizon-header .horizon-brand{font-size:14px}.horizon-nav a{font-size:12px;padding:6px 10px}.horizon-header .alerts-tab{font-size:12px!important}body>main{padding:18px 12px}html[data-horizon-page]:not([data-horizon-page="germany"]) .panel{padding:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}

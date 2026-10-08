@@ -18,6 +18,7 @@
     "germany.css",
     "germany.html",
     "horizon-i18n.js",
+    "horizon-init.js",
     "horizon-shell.css",
     "horizon-shell.js",
     "i18n-evidence-overseas.js",
