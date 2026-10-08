@@ -56,11 +56,12 @@ function calculate(){
   renderCountries();const p=selected(),n={...d.normalized[p.id]};n.annual_living_basis_local=value('living')*12;
   if(conditional){if(conditional.tuition_waived)n.annual_tuition_basis_local=0;if(conditional.fees_waived)n.annual_fees_basis_local=0;}
   const r=PusulaCash.project(n,d.policy,value('budget'),value('award'),value('multiplier'),value('repay'),value('repay-months'));
+  HorizonAlerts.update({kind:'study',title:p.university+' · '+p.program,items:HorizonAlertsModel.study({program:p,normalized:d.normalized[p.id],result:r,conditional})});
   if(!r)throw Error('Harç veya toplam yaşam verisi eksik.');
   for(const [label,v] of [['Koşullu toplam kaynak',money(r.required_azn)],['Planın üzerindeki açık',money(r.gap_azn)],['İlk negatif bakiye ayı',r.first_negative_month===null?'Bu senaryoda yok':String(r.first_negative_month)]]){const card=el('div',undefined,$('metrics'),'card');el('small',label,card);el('p',v,card,'metric');}
   chart(r.balance,n.currency);$('balances').textContent=r.balance.map((v,i)=>'Ay '+i+': '+money(v,n.currency)).join('\n');
   $('cash-note').textContent=(r.viable?'Girilen senaryoda nakit rezervi korunuyor.':'Girilen senaryoda nakit rezervi karşılanmıyor.')+' Bu sonuç kabul, vize veya iş uygunluğu değildir. Yaşam alanına yazılan değer ve fon yalnız senaryo. Katkı 0 girilmesi borç/yükümlülük yok demek değildir. Eksik ücretler ayrıca eklenebilir.';
- }catch(e){$('error').textContent=e.message;}
+ }catch(e){$('error').textContent=e.message;const p=selected();HorizonAlerts.update({kind:'study',title:p.university+' · '+p.program,items:HorizonAlertsModel.study({program:p,normalized:d.normalized[p.id],result:null,error:e.message,conditional})});}
 }
 $('funding').onclick=()=>{conditional=d.funding_scenarios.find(f=>f.id===$('funding-case').value);$('award').value=conditional.annual_award_local;$('funding-note').textContent=conditional.label;calculate();};
 $('award').addEventListener('input',()=>{if(conditional){conditional=null;$('funding-note').textContent='Manuel fon varsayımı; koşullu ücret muafiyetleri kaldırıldı.';calculate();}});

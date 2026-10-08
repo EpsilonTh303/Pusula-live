@@ -52,6 +52,7 @@ function render(){
   for(const key of keys){const e=el(key);if(['move_month','shared_start'].includes(key)&&!e.value){p[key]=null;continue;}if(!e.value||!e.checkValidity())throw Error('invalid');p[key]=['start_date','birth_date'].includes(key)?e.value:Number(e.value);}
   p.relationship=el('relationship').value;
   const r=GermanyCash.calculate(p);chartState={r,reserve:p.reserve};
+  HorizonAlerts.update({kind:'germany',title:el('program').selectedOptions[0].textContent,items:HorizonAlertsModel.germany({program:G.programs.find(x=>x.id===el('program').value),result:r,inputs:p})});
   const gap=r.additional_liquid_required>0;
   lex(el('scenario-state'),gap?'cashGapState':'cashCoveredState');
   lex(el('scenario-note'),gap?'cashGapNote':'cashCoveredNote',{amount:money(r.additional_liquid_required)});el('scenario-note').dataset.dynamic='true';
@@ -66,6 +67,7 @@ function render(){
   lex(el('relationship-life'),effect.relationship);lex(el('housing-life'),'housing');draw(r,p.reserve);
  }catch(error){
   chartState=null;lex(el('error'),'invalid');
+  HorizonAlerts.update({kind:'germany',title:el('program').selectedOptions[0]?.textContent||'Almanya',items:HorizonAlertsModel.germany({program:G.programs.find(x=>x.id===el('program').value),result:null,inputs:p,error:t('invalid')})});
   for(const id of ['total','graduation','negative','depleted']){el(id).textContent='—';delete el(id).dataset.lex;}
   for(const id of ['cash-detail','time-life','relationship-life','housing-life','scenario-state','scenario-note']){el(id).textContent='';delete el(id).dataset.lex;}
   el('negative-card').classList.remove('critical');el('timeline').replaceChildren();el('chart').replaceChildren();

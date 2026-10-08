@@ -1,6 +1,9 @@
 {
   "kind": "anonymized_public_static_ui",
   "files": [
+    "alerts-model.js",
+    "alerts.css",
+    "alerts.js",
     "app.js",
     "cash.js",
     "data.js",
