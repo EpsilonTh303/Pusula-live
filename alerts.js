@@ -29,7 +29,8 @@
   const filtered=items.filter(i=>select.value==='all'||i.status===select.value).sort((a,b)=>['fail','unknown','info'].indexOf(a.status)-['fail','unknown','info'].indexOf(b.status));
   if(!filtered.length)text('p',en()?'No alerts in this category. This is not a guarantee of eligibility.':'Bu kategoride uyarı yok. Bu, uygunluğun garanti edildiği anlamına gelmez.',list);
   for(const item of filtered){const card=document.createElement('article');card.className='alert-card';card.dataset.status=item.status;card.dataset.alertId=item.id;
-   text('span',({fail:'Karşılanmıyor',unknown:'Doğrulanmalı',info:'Varsayım'})[item.status],card,'alert-status');text('h3',item.title,card);text('p',item.detail.length>280?item.detail.slice(0,240)+'…':item.detail,card);if(item.detail.length>280){const full=document.createElement('details');text('summary','Koşulun tamamını oku',full);text('p',item.detail,full);card.append(full);}
+   const detail=en()&&window.HorizonI18n?HorizonI18n.translate(item.detail):item.detail;
+   text('span',({fail:'Karşılanmıyor',unknown:'Doğrulanmalı',info:'Varsayım'})[item.status],card,'alert-status');text('h3',item.title,card);text('p',detail.length>280?detail.slice(0,240)+'…':detail,card);if(detail.length>280){const full=document.createElement('details');text('summary','Koşulun tamamını oku',full);text('p',detail,full);card.append(full);}
    text('p','Sonraki adım: '+item.action,card,'alert-action');
    if(item.target){const action=text('button','İlgili ayara git →',card);action.type='button';action.dataset.target=item.target;action.addEventListener('click',()=>edit(item.target));}
    list.append(card);
@@ -37,5 +38,5 @@
  }
  window.HorizonAlerts={update(next){snapshot={...next,items:next.items.map(item=>({...item}))};render();},getSnapshot(){return structuredClone(snapshot);}};
  button.addEventListener('click',()=>{render();dialog.showModal();});select.addEventListener('change',render);
- document.querySelector('#language')?.addEventListener('change',render);render();
+ document.querySelector('#language')?.addEventListener('change',render);document.addEventListener('horizon:preferences',render);render();
 })();

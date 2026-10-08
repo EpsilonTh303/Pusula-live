@@ -83,8 +83,46 @@ function renderProgram(updateFees){
 }
 function renderBudget(){
  if(!budgetState)return;
- if(budgetState.invalid){lex(el('profile-budget'),'budgetInvalid');return;}
- lex(el('profile-budget'),'budget',{total:money(budgetState.total),gap:money(budgetState.gap),branch:t(budgetState.extra?'rotatingYes':'rotatingNo')});el('profile-budget').dataset.dynamic='true';
+ const node=el('profile-budget');
+ if(budgetState.invalid){lex(node,'budgetInvalid');return;}
+ if(budgetState.mode==='sources'){
+  lex(node,'budget',{total:money(budgetState.total),gap:money(budgetState.gap),branch:t(budgetState.extra?'rotatingYes':'rotatingNo')});node.dataset.dynamic='true';
+ }else{
+  delete node.dataset.lex;
+  node.textContent=(language==='en'?'Manual allocation total: ':'Manuel dağılım toplamı: ')+money(budgetState.total)+(language==='en'?'. The disabled AZN source fields are not included in this calculation.':'. Devre dışı AZN kaynak alanları bu hesaba dahil edilmez.');
+ }
+}
+function budgetMode(mode){
+ el('budget-mode').value=mode;el('budget-sources').disabled=mode==='allocation';
+}
+function applySources(){
+ budgetMode('sources');const saving=el('savings_azn'),rate=el('azn_per_eur');
+ if(!saving.value||!rate.value||!saving.checkValidity()||!rate.checkValidity()){
+  budgetState={invalid:true};el('initial_liquid').value='';el('blocked_initial').value='';renderBudget();render();return;
+ }
+ const extra=Number(el('rotating_branch').value),total=(Number(saving.value)+extra)/Number(rate.value),target=defaults.blocked_initial;
+ el('blocked_initial').value=Math.min(total,target).toFixed(2);el('initial_liquid').value=Math.max(0,total-target).toFixed(2);
+ budgetState={mode:'sources',total:Number(el('initial_liquid').value)+Number(el('blocked_initial').value),gap:Math.max(0,target-total),extra};renderBudget();render();
+}
+function allocationChanged(){
+ budgetMode('allocation');const liquid=el('initial_liquid'),blocked=el('blocked_initial');
+ budgetState=liquid.value&&blocked.value&&liquid.checkValidity()&&blocked.checkValidity()?{mode:'allocation',total:Number(liquid.value)+Number(blocked.value)}:{invalid:true};renderBudget();render();
+}
+function setupBudget(){
+ const panel=el('savings_azn').closest('details');panel.open=true;panel.classList.add('budget-panel');
+ const modeLabel=document.createElement('label');modeLabel.textContent='Finansman girişi';const mode=document.createElement('select');mode.id='budget-mode';
+ for(const[value,label]of [['sources','AZN kaynaklarından otomatik dağıt'],['allocation','Likit / bloke tutarlarını elle düzenle']]){const o=document.createElement('option');o.value=value;o.textContent=label;mode.append(o);}
+ modeLabel.append(mode);panel.insertBefore(modeLabel,panel.querySelector('fieldset'));
+ const sources=panel.querySelector('fieldset');sources.id='budget-sources';
+ const allocation=document.createElement('fieldset');allocation.className='controls';const legend=document.createElement('legend');legend.textContent='Likit ve bloke dağılımı (EUR)';allocation.append(legend);
+ for(const key of ['initial_liquid','blocked_initial'])allocation.append(el(key).closest('label'));
+ panel.insertBefore(allocation,el('apply-budget'));el('scenario').insertBefore(panel,el('scenario').querySelector('fieldset'));
+ mode.addEventListener('change',()=>mode.value==='sources'?applySources():allocationChanged());
+ for(const key of ['savings_azn','azn_per_eur'])el(key).addEventListener('input',applySources);
+ el('rotating_branch').addEventListener('change',applySources);
+ for(const key of ['initial_liquid','blocked_initial'])el(key).addEventListener('input',allocationChanged);
+ el('apply-budget').addEventListener('click',applySources);
+ applySources();
 }
 // 4 UI — collect inputs and wire events; financial ledger remains in ENGINE.
 for(const p of G.programs){const o=document.createElement('option');o.value=p.id;o.textContent=`${p.city} · ${p.name}`;el('program').append(o);}
@@ -95,11 +133,4 @@ for(const key of ['german_level','relationship'])el(key).addEventListener('chang
 el('theme').addEventListener('change',()=>applyTheme(el('theme').value));
 el('language').addEventListener('change',()=>{language=el('language').value;applyTheme(activeTheme);});
 new ResizeObserver(()=>{if(chartState)draw(chartState.r,chartState.reserve);}).observe(el('chart'));
-el('apply-budget').addEventListener('click',()=>{
- const saving=el('savings_azn'),rate=el('azn_per_eur');
- if(!saving.value||!rate.value||!saving.checkValidity()||!rate.checkValidity()){budgetState={invalid:true};renderBudget();return;}
- const extra=Number(el('rotating_branch').value),total=(Number(saving.value)+extra)/Number(rate.value),target=defaults.blocked_initial;
- el('blocked_initial').value=Math.min(total,target).toFixed(2);el('initial_liquid').value=Math.max(0,total-target).toFixed(2);
- budgetState={total,gap:Math.max(0,target-total),extra};renderBudget();render();
-});
-renderProgram(true);applyTheme(params.get('theme'));
+renderProgram(true);applyTheme(params.get('theme'));setupBudget();
